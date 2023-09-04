@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Votagem de Enquetes</title>
     <style>
       body {
         margin: 0;
@@ -112,11 +112,20 @@
 
     </style>
   </head>
-  <body>
+  <body>  
 
-    <button id="buttonIniciar"> <h2>Iniciar Aplicação</h2></button>
-    <br/>
-    <br/>
+    <div>
+      <h2>Aplicação de Enquetes</h2>
+
+    </div>
+
+    <div id="buttonIniciarDiv">
+      <br/>
+      <br/>
+      <button id="buttonIniciar"> <h2>Iniciar Aplicação de Enquetes</h2></button>
+      <br/>
+      <br/>
+  </div>
     <div id="loader"></div>
 
     <div id="createEnquete">
@@ -180,7 +189,8 @@
     buttonIniciar.addEventListener('click', function(){
 
       socket.emit("getAllEnquetes", "getAllEnquetes");
-      buttonIniciar.style.display = 'none';
+      buttonIniciarDiv = document.getElementById('buttonIniciarDiv');
+      buttonIniciarDiv.hidden = true;
       loading();
     });
 
@@ -266,8 +276,8 @@
 
       createEnqueteDiv.hidden = false;
 
-      var buttonIniciar = document.getElementById("buttonIniciar");
-      buttonIniciar.hidden = true;
+      buttonIniciarDiv = document.getElementById('buttonIniciarDiv');
+      buttonIniciarDiv.hidden = true;
 
       enquetesDivConteudo.appendChild(enquetesDiv);
 
