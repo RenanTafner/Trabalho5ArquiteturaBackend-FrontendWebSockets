@@ -8,6 +8,7 @@
         padding-bottom: 3rem;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           Helvetica, Arial, sans-serif;
+          text-align: center;
       }
 
       #form {
@@ -21,6 +22,7 @@
         height: 3rem;
         box-sizing: border-box;
         backdrop-filter: blur(10px);
+        text-align: center;
       }
       #input {
         border: none;
@@ -60,100 +62,97 @@
 
 
       #loader {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 1;
-  width: 120px;
-  height: 120px;
-  margin: -76px 0 0 -76px;
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 120px;
+        height: 120px;
+        margin: -76px 0 0 -76px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
 
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
+      @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+      }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
 
-/* Add animation to "page content" */
-.animate-bottom {
-  position: relative;
-  -webkit-animation-name: animatebottom;
-  -webkit-animation-duration: 1s;
-  animation-name: animatebottom;
-  animation-duration: 1s
-}
+      /* Add animation to "page content" */
+      .animate-bottom {
+        position: relative;
+        -webkit-animation-name: animatebottom;
+        -webkit-animation-duration: 1s;
+        animation-name: animatebottom;
+        animation-duration: 1s
+      }
 
-@-webkit-keyframes animatebottom {
-  from { bottom:-100px; opacity:0 } 
-  to { bottom:0px; opacity:1 }
-}
+      @-webkit-keyframes animatebottom {
+        from { bottom:-100px; opacity:0 } 
+        to { bottom:0px; opacity:1 }
+      }
 
-@keyframes animatebottom { 
-  from{ bottom:-100px; opacity:0 } 
-  to{ bottom:0; opacity:1 }
-}
+      @keyframes animatebottom { 
+        from{ bottom:-100px; opacity:0 } 
+        to{ bottom:0; opacity:1 }
+      }
 
-#myDiv {
-  display: none;
-  text-align: center;
-}
-
+      #myDiv {
+        display: none;
+        text-align: center;
+      }
 
     </style>
   </head>
   <body>
 
-
-
-    <button id="buttonIniciar"> Iniciar</button>
-
+    <button id="buttonIniciar"> <h2>Iniciar Aplicação</h2></button>
+    <br/>
+    <br/>
     <div id="loader"></div>
 
     <div id="createEnquete">
 
       <form id="createEnqueteForm" action="">
+        <h2>Criar uma Enquete Nova</h2>
+        <h2>Nome/Pergunta da Enquete:</h2>
         <input id="criarEnqueteNome" autocomplete="off" />
         
         <button>Criar Enquete</button>
 
       </form>
-
-
+      <br/>
     </div>
-
 
     <div id="enquetesDivConteudo">
 
     </div>
 
-
-
   </body>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="index.js"></script>
   <script>
 
-  document.getElementById("loader").style.display = "none";
+    document.getElementById("loader").style.display = "none";
 
     function loading(){
 
       document.getElementById("loader").style.display = "block";
       document.getElementById("enquetesDivConteudo").style.display = "none";
+      document.getElementById("createEnquete").style.display = "none";
 
       setTimeout(function(){
 
         document.getElementById("loader").style.display = "none";
         document.getElementById("enquetesDivConteudo").style.display = "block";
+        document.getElementById("createEnquete").style.display = "block";
 
       }, 10000);
 
@@ -164,7 +163,8 @@
     var createEnqueteForm = document.getElementById("createEnqueteForm");
     var criarEnqueteNome = document.getElementById("criarEnqueteNome");
 
-    createEnqueteForm.hidden = true;
+    createEnqueteDiv  =document.getElementById("createEnquete");
+    createEnqueteDiv.hidden = true;
 
     createEnqueteForm.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -180,6 +180,7 @@
     buttonIniciar.addEventListener('click', function(){
 
       socket.emit("getAllEnquetes", "getAllEnquetes");
+      buttonIniciar.style.display = 'none';
       loading();
     });
 
@@ -187,86 +188,90 @@
       getAllEnquetes(enquetesJson);
     });
 
-
     function getAllEnquetes(enquetesJson){
 
       var enquetesDivConteudo = document.getElementById('enquetesDivConteudo');
 
+      enquetesDiv = document.getElementById('enquetesDiv');
+
+      if(enquetesDiv){
+        enquetesDiv.remove();
+      }
+
+      enquetesDiv = document.createElement('div');
+      enquetesDiv.id = 'enquetesDiv';
+
+      var enquetes = enquetesJson.enquetes;
+
+      enquetes.sort((a,b) => a.enqueteId - b.enqueteId); 
+
+      for (let i = 0; i < enquetes.length; i++) {
+        enquete = enquetes[i];
+
+        const enqueteIdAux = enquete.enqueteId;
+
+        enqueteAuxDiv = document.createElement('div');
+
+        enqueteAuxNomeH2 = document.createElement('h3');
+        enqueteAuxNomeH2.textContent = 'Nome/Pergunta da Enquete: ' + enquete.enqueteNome
+
+        enqueteAuxQuantVotosSimH2 = document.createElement('h3');
+        enqueteAuxQuantVotosSimH2.textContent = `Quantidade de Votos "Sim" : ` + enquete.enqueteQuantVotosSim;
+
+        enqueteAuxQuantVotosNaoH2 = document.createElement('h3');
+        enqueteAuxQuantVotosNaoH2.textContent = `Quantidade de Votos "Não" : ` + enquete.enqueteQuantVotosNao;
+
+        enqueteVotarSimButton = document.createElement('button');
+        enqueteVotarSimButton.textContent = `Votar "Sim"`;
+        enqueteVotarSimButton.style= 'margin-right:16px';
+
+        enqueteVotarNaoButton = document.createElement('button');
+        enqueteVotarNaoButton.textContent = `Votar "Não"`;
+        enqueteVotarNaoButton.style= 'margin-right:16px';
+
+        enqueteVotarSimButton.addEventListener('click', function(){
+
+          socket.emit("voteEnqueteSim", enqueteIdAux);
+          loading();
+        });
+
+        enqueteVotarNaoButton.addEventListener('click', function(){
+
+          socket.emit("voteEnqueteNao", enqueteIdAux);
+          loading();
+
+        });
+
+        var br = document.createElement('br');
+        var br2 = document.createElement('br');
 
 
-enquetesDiv = document.getElementById('enquetesDiv');
-
-if(enquetesDiv){
-  enquetesDiv.remove();
-}
-
-enquetesDiv = document.createElement('div');
-enquetesDiv.id = 'enquetesDiv';
-
-var enquetes = enquetesJson.enquetes;
-
-for (let i = 0; i < enquetes.length; i++) {
-  enquete = enquetes[i];
-
-  const enqueteIdAux = enquete.enqueteId;
-
-  enqueteAuxDiv = document.createElement('div');
-
-  enqueteAuxNomeH2 = document.createElement('h3');
-  enqueteAuxNomeH2.textContent = 'Nome da Enquete: ' + enquete.enqueteNome
-
-  enqueteAuxQuantVotosSimH2 = document.createElement('h3');
-  enqueteAuxQuantVotosSimH2.textContent = 'Quantidade de Votos Sim : ' + enquete.enqueteQuantVotosSim;
-
-  enqueteAuxQuantVotosNaoH2 = document.createElement('h3');
-  enqueteAuxQuantVotosNaoH2.textContent = 'Quantidade de Votos Não : ' + enquete.enqueteQuantVotosNao;
-
-  enqueteVotarSimButton = document.createElement('button');
-  enqueteVotarSimButton.textContent = 'Votar Sim';
-
-  enqueteVotarNaoButton = document.createElement('button');
-  enqueteVotarNaoButton.textContent = 'Votar Náo';
-
-  enqueteVotarSimButton.addEventListener('click', function(){
-
-    socket.emit("voteEnqueteSim", enqueteIdAux);
-    loading();
-  });
-
-  enqueteVotarNaoButton.addEventListener('click', function(){
-
-    socket.emit("voteEnqueteNao", enqueteIdAux);
-    loading();
-
-  });
+        enqueteAuxDiv.appendChild(enqueteAuxNomeH2);
+        enqueteAuxDiv.appendChild(enqueteAuxQuantVotosSimH2);
+        enqueteAuxDiv.appendChild(enqueteAuxQuantVotosNaoH2);
+        enqueteAuxDiv.appendChild(enqueteVotarSimButton);
+        enqueteAuxDiv.appendChild(enqueteVotarNaoButton);
+        enqueteAuxDiv.appendChild(br);
+        enqueteAuxDiv.appendChild(br2);
 
 
-  enqueteAuxDiv.appendChild(enqueteAuxNomeH2);
-  enqueteAuxDiv.appendChild(enqueteAuxQuantVotosSimH2);
-  enqueteAuxDiv.appendChild(enqueteAuxQuantVotosNaoH2);
-  enqueteAuxDiv.appendChild(enqueteVotarSimButton);
-  enqueteAuxDiv.appendChild(enqueteVotarNaoButton);
+        enquetesDiv.appendChild(enqueteAuxDiv);
 
+        
 
+        var buttonIniciar = document.getElementById("buttonIniciar");
+        buttonIniciar.hidden = true;
 
-  enquetesDiv.appendChild(enqueteAuxDiv);
+      }
 
-  
-  var createEnqueteForm = document.getElementById("createEnqueteForm");
-  createEnqueteForm.hidden = false;
+      createEnqueteDiv.hidden = false;
 
-  var buttonIniciar = document.getElementById("buttonIniciar");
-  buttonIniciar.hidden = true;
+      var buttonIniciar = document.getElementById("buttonIniciar");
+      buttonIniciar.hidden = true;
 
-}
-
-enquetesDivConteudo.appendChild(enquetesDiv);
+      enquetesDivConteudo.appendChild(enquetesDiv);
 
     }
 
-
-
-
-    
   </script>
 </html>
