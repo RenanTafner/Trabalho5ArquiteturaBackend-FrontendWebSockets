@@ -59,7 +59,54 @@
       }
 
 
+      #loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 120px;
+  height: 120px;
+  margin: -76px 0 0 -76px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
 
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+#myDiv {
+  display: none;
+  text-align: center;
+}
 
 
     </style>
@@ -67,7 +114,10 @@
   <body>
 
 
+
     <button id="buttonIniciar"> Iniciar</button>
+
+    <div id="loader"></div>
 
     <div id="createEnquete">
 
@@ -93,6 +143,21 @@
   <script src="index.js"></script>
   <script>
 
+  document.getElementById("loader").style.display = "none";
+
+    function loading(){
+
+      document.getElementById("loader").style.display = "block";
+      document.getElementById("enquetesDivConteudo").style.display = "none";
+
+      setTimeout(function(){
+
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("enquetesDivConteudo").style.display = "block";
+
+      }, 10000);
+
+    }
 
     var socket = io();
 
@@ -105,6 +170,7 @@
       e.preventDefault();
       if (criarEnqueteNome.value) {
         socket.emit("createEnquete", criarEnqueteNome.value);
+        loading();
       }
     });
 
@@ -114,6 +180,7 @@
     buttonIniciar.addEventListener('click', function(){
 
       socket.emit("getAllEnquetes", "getAllEnquetes");
+      loading();
     });
 
     socket.on("getAllEnquetes", function (enquetesJson) {
@@ -163,11 +230,13 @@ for (let i = 0; i < enquetes.length; i++) {
   enqueteVotarSimButton.addEventListener('click', function(){
 
     socket.emit("voteEnqueteSim", enqueteIdAux);
+    loading();
   });
 
   enqueteVotarNaoButton.addEventListener('click', function(){
 
     socket.emit("voteEnqueteNao", enqueteIdAux);
+    loading();
 
   });
 
