@@ -1,2 +1,10 @@
+## Trabalho Final Disciplina Arquitetura Backend
 
-TrabalhoFinalArquiteturaBackendFrontendWebSocokets
+# Frontend em WebSockets
+
+Integrantes do grupo:
+
+* Luiz Gabriel Santos Fernandes;
+* Raife Ferreira Paiva;
+* Renan Carlos Silva Braz Tafner.
+
