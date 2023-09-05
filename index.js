@@ -110,6 +110,8 @@ async function createEnquete(nomeEnquete){
       }
     }`, variables:{enqueteNomeInsert:nomeEnquete}
   });
+
+  console.log(nomeEnquete);
   
   const options = {
     hostname: 'localhost',
@@ -146,13 +148,6 @@ async function createEnquete(nomeEnquete){
   
   
   }
-
-
-
-
-
-
-
 
 
 
