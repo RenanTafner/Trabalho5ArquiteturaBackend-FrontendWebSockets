@@ -1,6 +1,6 @@
-## Trabalho Final Disciplina Arquitetura Backend
+# Trabalho Final Disciplina Arquitetura Backend
 
-# Frontend em WebSockets
+## Frontend em WebSockets
 
 Integrantes do grupo:
 
