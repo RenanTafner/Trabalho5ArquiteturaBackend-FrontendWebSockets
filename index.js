@@ -111,7 +111,6 @@ async function createEnquete(nomeEnquete){
     }`, variables:{enqueteNomeInsert:nomeEnquete}
   });
 
-  console.log(nomeEnquete);
   
   const options = {
     hostname: 'localhost',
@@ -140,7 +139,7 @@ async function createEnquete(nomeEnquete){
   req.on('error', (error) => {
     console.error(error);
   });
-  
+
   req.write(data);
   req.end();
 
