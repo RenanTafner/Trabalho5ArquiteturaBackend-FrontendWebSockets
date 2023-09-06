@@ -2,7 +2,7 @@
 
 ## Frontend em WebSockets
 
-Integrantes do grupo:
+## Integrantes do grupo:
 
 * Luiz Gabriel Santos Fernandes;
 * Raife Ferreira Paiva;
