@@ -1,4 +1,6 @@
-# Trabalho Final Disciplina Arquitetura Backend
+# Trabalho 5 Disciplina Arquitetura Backend
+
+## Sistema de Votação em Tempo Real
 
 ## Frontend em WebSockets
 
