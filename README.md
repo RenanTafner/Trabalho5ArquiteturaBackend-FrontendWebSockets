@@ -10,4 +10,4 @@
 * Raife Ferreira Paiva;
 * Renan Carlos Silva Braz Tafner.
 
-Parar rodar, basta rodar o comando "node index.js" na pasta raíz do projeto.
+Parar rodar, basta rodar o comando "npm install" e depois "node index.js", ambos na pasta raíz do projeto.
